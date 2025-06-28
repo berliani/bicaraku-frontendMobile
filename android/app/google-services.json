@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "313504734487",
+    "project_id": "bicaraku-a81ab",
+    "storage_bucket": "bicaraku-a81ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313504734487:android:afd3e7caa55ea79183eb52",
+        "android_client_info": {
+          "package_name": "com.bicaraku.bicaraku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313504734487-gpmqt1h3vp9rkmeun8i2vhgdqa5lintl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiTUbmuGBeQOj3YHRC1b-t6t5TnmphQEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313504734487-gpmqt1h3vp9rkmeun8i2vhgdqa5lintl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313504734487:android:b5e767a795411ad383eb52",
+        "android_client_info": {
+          "package_name": "com.bicaraku.secretappv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313504734487-6njiehjrop162b819vbt455bcoo7otjh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bicaraku.secretappv2",
+            "certificate_hash": "8c195277b6ef8324a52e39664d928f9bba7e31a4"
+          }
+        },
+        {
+          "client_id": "313504734487-gpmqt1h3vp9rkmeun8i2vhgdqa5lintl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiTUbmuGBeQOj3YHRC1b-t6t5TnmphQEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313504734487-gpmqt1h3vp9rkmeun8i2vhgdqa5lintl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
