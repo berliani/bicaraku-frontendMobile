@@ -1,5 +1,6 @@
 class ApiConstants {
-  static String baseUrl = 'http://192.168.1.9:5000';
+  static String baseUrl = 'https://bicarakuapp.loca.lt';
+    // static String baseUrl = 'https://192.168.1.9:5000';
 
   // Auth
   static const login = '/api/login';
@@ -20,4 +21,6 @@ class ApiConstants {
   static const activities = '/api/activities';
   // Poin
   static const totalPoints = '/api/total-points';
+    // Learning History ---
+  static const learningHistory = '/api/learning-history';
 }

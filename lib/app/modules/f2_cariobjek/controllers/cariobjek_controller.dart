@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:bicaraku/app/routes/app_routes.dart';
-import 'package:bicaraku/core/utils/pronunciation.dart';
 import 'package:bicaraku/core/utils/yuv_converter.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +16,7 @@ import 'package:bicaraku/core/utils/debouncer.dart';
 class CariObjekController extends GetxController {
   late CameraController cameraController;
   final isCameraInitialized = false.obs;
-  final countdown = 20.obs;
+  final countdown = 30.obs;
   final instruksi = ''.obs;
   final targetObject = ''.obs;
   final detectedObject = ''.obs;

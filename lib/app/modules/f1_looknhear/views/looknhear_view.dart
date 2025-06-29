@@ -53,7 +53,7 @@ class _LooknhearViewState extends State<LooknhearView> {
                   const SizedBox(height: 40),
                   ElevatedButton.icon(
                     onPressed: () {
-                      lookController.speakInitialGuidance();
+
                       Get.toNamed('/looknhearcam');
                     },
                     icon: const Icon(Icons.play_arrow, color: Colors.black),

@@ -3,6 +3,7 @@ import 'package:bicaraku/app/modules/f1_looknhear/controllers/looknhear_controll
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bicaraku/core/widgets/custom_bottom_nav.dart';
 
@@ -394,6 +395,10 @@ class _ScrapingViewState extends State<ScrapingView> {
   // ===== TAMBAHKAN METHOD UNTUK RIWAYAT BELAJAR =====
   Widget buildLearningHistoryView() {
     return Obx(() {
+      if (looknhearController.isLoadingHistory.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
       if (looknhearController.learningHistory.isEmpty) {
         return Center(
           child: Column(
@@ -407,12 +412,15 @@ class _ScrapingViewState extends State<ScrapingView> {
               const SizedBox(height: 20),
               const Text(
                 'Belum ada riwayat belajar',
-                style: TextStyle(fontSize: 16, color: Color.fromARGB(179, 0, 0, 0)),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(179, 0, 0, 0),
+                ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Get.toNamed("/looknhear"); // Kembali ke halaman utama
+                  Get.toNamed("/looknhear");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.pinkAccent[100],
@@ -430,26 +438,6 @@ class _ScrapingViewState extends State<ScrapingView> {
 
       return Column(
         children: [
-          // TOMBOL HAPUS RIWAYAT
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16, top: 8),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  _showClearHistoryDialog();
-                },
-                icon: const Icon(Icons.delete, size: 20),
-                label: const Text('Hapus Riwayat'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red[400],
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ),
-          ),
-
-          // GRAFIK DAN DAFTAR RIWAYAT
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16),
@@ -494,32 +482,7 @@ class _ScrapingViewState extends State<ScrapingView> {
     });
   }
 
-  void _showClearHistoryDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Hapus Riwayat"),
-          content: const Text(
-            "Apakah Anda yakin ingin menghapus semua riwayat belajar?",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Batal"),
-            ),
-            TextButton(
-              onPressed: () {
-                looknhearController.clearLearningHistory();
-                Navigator.pop(context);
-              },
-              child: const Text("Hapus", style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Remove _showClearHistoryDialog from here, it's handled by controller now
 
   Widget _buildBarChartForLearningHistory() {
     final items = looknhearController.mostDetectedObjects.entries.toList();
@@ -534,7 +497,6 @@ class _ScrapingViewState extends State<ScrapingView> {
     items.sort((a, b) => b.value.compareTo(a.value));
     final max = items.first.value.toDouble();
 
-    // Daftar warna untuk setiap batang
     final List<Color> barColors = [
       Colors.pinkAccent.shade100,
       Colors.blueAccent.shade100,
@@ -549,7 +511,7 @@ class _ScrapingViewState extends State<ScrapingView> {
     ];
 
     return Container(
-      height: 260, // Tinggi ditambah untuk menampung label
+      height: 260,
       padding: const EdgeInsets.only(top: 16, bottom: 24),
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -567,12 +529,11 @@ class _ScrapingViewState extends State<ScrapingView> {
                   final count = entry.value;
 
                   return Container(
-                    width: 70, // Lebar cukup untuk nama objek
+                    width: 70,
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // Nilai count di atas batang
                         Text(
                           '$count',
                           style: const TextStyle(
@@ -582,8 +543,6 @@ class _ScrapingViewState extends State<ScrapingView> {
                           ),
                         ),
                         const SizedBox(height: 6),
-
-                        // Batang grafik
                         Container(
                           height: 150 * heightPercent,
                           decoration: BoxDecoration(
@@ -607,8 +566,6 @@ class _ScrapingViewState extends State<ScrapingView> {
                           ),
                         ),
                         const SizedBox(height: 12),
-
-                        // Nama objek di bawah batang
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 4,
@@ -638,89 +595,49 @@ class _ScrapingViewState extends State<ScrapingView> {
 
   Widget _buildHistoryList() {
     return Obx(() {
-      // Pastikan controller sudah diinisialisasi
-
       return ListView.builder(
         shrinkWrap: true,
-
         physics: const NeverScrollableScrollPhysics(),
-
         itemCount: looknhearController.learningHistory.length,
-
         itemBuilder: (context, index) {
           final entry = looknhearController.learningHistory[index];
-
-          // PERBAIKAN: Handle kemungkinan format timestamp invalid
-
           DateTime date;
-
           try {
-            date = DateTime.parse(entry['timestamp']);
+            date = entry.timestamp; // Gunakan langsung dari model
           } catch (e) {
             date = DateTime.now();
           }
 
           return Dismissible(
-            key: Key(entry['timestamp']),
-
+            key: Key(entry.id), // Gunakan ID dari model sebagai key
             background: Container(
               color: Colors.red,
-
               alignment: Alignment.centerRight,
-
               padding: const EdgeInsets.only(right: 20),
-
               child: const Icon(Icons.delete, color: Colors.white),
             ),
-
             direction: DismissDirection.endToStart,
-
             confirmDismiss: (direction) async {
-              return await showDialog(
-                context: context,
-
-                builder:
-                    (context) => AlertDialog(
-                      title: const Text("Hapus Item"),
-
-                      content: const Text(
-                        "Apakah Anda yakin ingin menghapus item ini?",
-                      ),
-
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-
-                          child: const Text("Batal"),
-                        ),
-
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-
-                          child: const Text(
-                            "Hapus",
-
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
-              );
+              // Dialog konfirmasi sekarang ditangani di controller removeHistoryItem
+              return looknhearController.removeHistoryItem(entry.id) != null;
             },
-
             onDismissed: (direction) {
-              looknhearController.removeHistoryItem(index);
+              // Tidak perlu memanggil removeHistoryItem di sini karena sudah dipanggil di confirmDismiss
+              // Controller akan memperbarui state secara otomatis setelah API response
             },
-
             child: Card(
+              margin: const EdgeInsets.symmetric(vertical: 6),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: ListTile(
-                title: Text(entry['object'] ?? 'Unknown Object'), // Handle null
-
-                subtitle: Text(
-                  '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}',
+                title: Text(entry.object),
+                subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(date)),
+                leading: const Icon(
+                  Icons.history_toggle_off,
+                  color: Colors.blueAccent,
                 ),
-
-                leading: const Icon(Icons.history, color: Colors.purple),
               ),
             ),
           );
@@ -731,52 +648,37 @@ class _ScrapingViewState extends State<ScrapingView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       backgroundColor: Colors.white,
-
       bottomNavigationBar: const CustomBottomNav(),
-
       body: SafeArea(
         child: Column(
           children: [
-            // ROW: Tombol Back dan Tombol-Tombol Tab
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 12.0,
-
                 vertical: 12,
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
-                  // Tombol Back dan Judul
                   Row(
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back),
-
                         onPressed: () => Get.back(),
                       ),
-
                       const SizedBox(width: 4),
-
                       const Text(
                         'Infografis',
-
                         style: TextStyle(
                           fontSize: 20,
-
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 8),
-
-                  // Tab Bar (horizontal scrollable)
                   SizedBox(
                     height: 48,
                     child: ListView(
@@ -798,8 +700,6 @@ class _ScrapingViewState extends State<ScrapingView> {
                 ],
               ),
             ),
-
-            // BODY CONTENT
             Expanded(
               child:
                   isLoading
@@ -813,6 +713,27 @@ class _ScrapingViewState extends State<ScrapingView> {
           ],
         ),
       ),
+      floatingActionButton: Obx(() {
+        if (_selectedTabIndex == 0 &&
+            looknhearController.learningHistory.isNotEmpty) {
+          return FloatingActionButton.extended(
+            onPressed: () {
+              looknhearController.clearLearningHistory();
+            },
+            label: const Text('Hapus Riwayat'),
+            icon: const Icon(Icons.delete_forever),
+            backgroundColor: Colors.red[400],
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      }),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.endFloat,
     );
   }
 }

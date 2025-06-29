@@ -93,7 +93,7 @@ class PeopleSpeakView extends StatelessWidget {
             () => ChallengeView(
               phrase: level['phrase'],
               interactiveImage: level['interactiveImage'],
-              previewImage: level['previewImageSmall'], // Kirim previewImage
+              previewImageSmall: level['previewImageSmall'], // Kirim previewImage
             ),
           ),
       child: Container(

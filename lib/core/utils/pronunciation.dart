@@ -68,6 +68,7 @@ final Map<String, List<String>> pronunciationExceptions = {
   "pengering rambut": ["pe", "nge", "ring", "ram", "but"],
   "tas punggung": ["tas", "pung", "gung"],
   "tas tangan": ["tas", "tang", "an"],
+  "ponsel": ["pon","sel"],
 
   // Lalu Lintas
   "lampu lalu lintas": ["lam", "pu", "la", "lu", "lin", "tas"],
@@ -77,6 +78,8 @@ final Map<String, List<String>> pronunciationExceptions = {
 
   // Lainnya
   "bola": ["bo", "la"],
+  "buku": ["bu","ku"],
+  "dasi":["da","si"],
   "rak": ["rak"],
   "tas": ["tas"],
   "sepatu": ["se", "pa", "tu"],

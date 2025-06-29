@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:audioplayers/audioplayers.dart';
 
 class BerbicaraController extends GetxController {
   final FlutterTts tts = FlutterTts();
   final stt.SpeechToText speech = stt.SpeechToText();
-  final TotalPointsController pointsController =
-      Get.put(TotalPointsController());
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  final TotalPointsController pointsController = Get.put(
+    TotalPointsController(),
+  );
   final ActivityController activityController = Get.find<ActivityController>();
 
   var currentSentence = "".obs;
@@ -25,6 +28,10 @@ class BerbicaraController extends GetxController {
   var systemSyllable = "".obs; // Sedang diucapkan sistem
   var userSyllable = "".obs; // Sedang diucapkan pengguna
   var syllableResults = <String, bool>{}.obs; // Hasil per suku kata
+  final correctImage = 'assets/images/correct.png';
+  final wrongImage = 'assets/images/wrong.png';
+  final wrongAudio = 'audio/wrong.wav'; 
+  final correctAudio = 'audio/correct.wav'; 
 
   final int challengePoints = 20; // Poin per challenge
 
@@ -219,7 +226,11 @@ class BerbicaraController extends GetxController {
     userSyllable.value = "";
   }
 
-  void _showSuccessDialog(String previewImage) {
+  void _showSuccessDialog(String previewImage) async {
+    // Tambahkan async
+    // Mainkan suara benar
+    await _audioPlayer.play(AssetSource(correctAudio));
+
     // Simpan aktivitas langsung ke MongoDB
     activityController.addHistory(
       ActivityHistory(
@@ -237,7 +248,8 @@ class BerbicaraController extends GetxController {
     pointsController.updatePoints(challengePoints);
 
     // Ucapkan selamat dengan suara
-    tts.speak(
+    await tts.speak(
+      // Tambahkan await
       "Selamat! Kamu berhasil mengucapkan semua suku kata dengan benar. Kamu mendapatkan $challengePoints poin!",
     );
 
@@ -296,8 +308,14 @@ class BerbicaraController extends GetxController {
     );
   }
 
-  void _showRetryDialog() {
-    tts.speak("Pengucapan belum tepat. Silakan coba lagi.");
+  void _showRetryDialog() async {
+    // Tambahkan async
+    // Mainkan suara salah
+    await _audioPlayer.play(AssetSource(wrongAudio));
+
+    await tts.speak(
+      "Pengucapan belum tepat. Silakan coba lagi.",
+    ); // Tambahkan await
     Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -421,6 +439,7 @@ class BerbicaraController extends GetxController {
   void onClose() {
     tts.stop();
     speech.stop();
+    _audioPlayer.dispose();
     isCancelled.value = true;
     super.onClose();
   }

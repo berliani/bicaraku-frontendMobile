@@ -6,13 +6,13 @@ import 'package:video_player/video_player.dart';
 class ChallengeView extends StatefulWidget {
   final String phrase;
   final String interactiveImage;
-  final String previewImage; 
+  final String previewImageSmall; 
 
   const ChallengeView({
     super.key,
     required this.phrase,
     required this.interactiveImage,
-    required this.previewImage,
+    required this.previewImageSmall,
   });
 
   @override
@@ -239,7 +239,7 @@ class _ChallengeViewState extends State<ChallengeView> {
                 child: Center(
                   child: Obx(
                     () => FloatingActionButton.large(
-                      onPressed: () => controller.toggleRecording(widget.previewImage),
+                      onPressed: () => controller.toggleRecording(widget.previewImageSmall),
                       backgroundColor:
                           controller.isListening.value
                               ? Colors.red
