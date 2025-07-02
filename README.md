@@ -29,7 +29,7 @@ Aplikasi ini dikembangkan untuk **stimulasi bicara interaktif anak usia golden a
 
 1️⃣ Clone repository ini:
 ```bash
-git clone https://github.com/berliani/bicaraku-frontendMobile
+git clone https://github.com/berliani/bicaraku-frontendMobile.git
 cd bicaraku-frontendMobile
 ```
 2️⃣ Pastikan Anda sudah menginstal Flutter SDK dan dependencies:
