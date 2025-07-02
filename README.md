@@ -1,16 +1,42 @@
-# bicaraku
+# Bicaraku 🗣️
 
-A new Flutter project.
+**Bicaraku** adalah aplikasi mobile berbasis **Flutter** yang terintegrasi dengan model **AI YOLOv8** untuk deteksi multi-objek secara real-time.  
+Aplikasi ini dikembangkan untuk **stimulasi bicara interaktif anak usia golden age (0-5 tahun)** melalui interaksi dengan objek sekitar dan latihan berbicara.
 
-## Getting Started
+## 🚀 Fitur Utama
 
-This project is a starting point for a Flutter application.
+- 👀 **Melihat**  
+  Mendeteksi objek sekitar dengan kamera secara real-time menggunakan YOLOv8.  
+  Disertai **speech-to-text (STT)** yang menjelaskan nama objek.  
+  Pengguna diminta mengulangi nama objek — sistem memberikan feedback apakah pengucapan benar atau salah.
 
-A few resources to get you started if this is your first Flutter project:
+- 🔍 **Mencari**  
+  Pengguna memilih objek yang ingin dicari.  
+  Kamera mendeteksi keberadaan objek tersebut dan memberikan feedback saat ditemukan.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 💬 **Berbicara**  
+  Stimulasi berbicara melalui berbagai challenge.  
+  Setiap level memiliki tingkat kesulitan berbeda berdasarkan jumlah suku kata yang harus diucapkan.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠 Teknologi dan Library
+
+- **Flutter**
+- **YOLOv8** (deteksi objek real-time)
+- **STT** (Speech-to-Text)
+- **TTS** (Text-to-Speech)
+
+## ⚙️ Instalasi dan Cara Menjalankan
+
+1️⃣ Clone repository ini:
+```bash
+git clone https://github.com/berliani/bicaraku-frontendMobile
+cd bicaraku-frontendMobile
+```
+2️⃣ Pastikan Anda sudah menginstal Flutter SDK dan dependencies:
+```bash
+flutter pub get
+```
+3️⃣ Jalankan aplikasi di emulator atau perangkat fisik:
+```bash
+flutter run
+```
